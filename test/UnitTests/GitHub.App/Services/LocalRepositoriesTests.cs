@@ -7,13 +7,13 @@ using GitHub.Models;
 using GitHub.Primitives;
 using GitHub.Services;
 using NSubstitute;
-using Xunit;
+using NUnit.Framework;
 
 public class LocalRepositoriesTests : TestBaseClass
 {
     const string GitHubAddress = "https://github.com";
 
-    [Fact]
+    [Test]
     public void RepositoriesShouldInitiallyBeEmpty()
     {
         var service = CreateVSGitServices("repo1", "repo2");
@@ -22,7 +22,7 @@ public class LocalRepositoriesTests : TestBaseClass
         Assert.Empty(target.Repositories);
     }
 
-    [Fact]
+    [Test]
     public async Task RefreshShouldLoadRepositories()
     {
         var service = CreateVSGitServices("repo1", "repo2");
@@ -35,7 +35,7 @@ public class LocalRepositoriesTests : TestBaseClass
             target.Repositories.Select(x => x.Name).ToList());
     }
 
-    [Fact]
+    [Test]
     public async Task RefreshShouldAddNewRepository()
     {
         var service = CreateVSGitServices("repo1", "repo2");
@@ -56,7 +56,7 @@ public class LocalRepositoriesTests : TestBaseClass
             target.Repositories.Select(x => x.Name).ToList());
     }
 
-    [Fact]
+    [Test]
     public async Task RefreshShouldRemoveRepository()
     {
         var service = CreateVSGitServices("repo1", "repo2");
@@ -76,7 +76,7 @@ public class LocalRepositoriesTests : TestBaseClass
             target.Repositories.Select(x => x.Name).ToList());
     }
 
-    [Fact]
+    [Test]
     public async Task GetRepositoriesForAddressShouldFilterRepositories()
     {
         var service = CreateVSGitServices(
@@ -94,7 +94,7 @@ public class LocalRepositoriesTests : TestBaseClass
         Assert.Equal(2, result.Count);
     }
 
-    [Fact]
+    [Test]
     public async Task GetRepositoriesForAddressShouldSortRepositories()
     {
         var service = CreateVSGitServices("c", "a", "b");

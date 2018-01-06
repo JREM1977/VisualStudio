@@ -11,7 +11,7 @@ using GitHub.Caches;
 using GitHub.Services;
 using NSubstitute;
 using Octokit;
-using Xunit;
+using NUnit.Framework;
 using System.Globalization;
 using System.Reactive.Subjects;
 using System.Threading;
@@ -25,7 +25,7 @@ public class ModelServiceTests
 {
     public class TheGetCurrentUserMethod : TestBaseClass
     {
-        [Fact]
+        [Test]
         public async Task RetrievesCurrentUser()
         {
             var apiClient = Substitute.For<IApiClient>();
@@ -41,7 +41,7 @@ public class ModelServiceTests
 
     public class TheInsertUserMethod : TestBaseClass
     {
-        [Fact]
+        [Test]
         public async Task AddsUserToCache()
         {
             var apiClient = Substitute.For<IApiClient>();
@@ -57,7 +57,7 @@ public class ModelServiceTests
 
     public class TheGetGitIgnoreTemplatesMethod : TestBaseClass
     {
-        [Fact]
+        [Test]
         public async Task CanRetrieveAndCacheGitIgnores()
         {
             var data = new[] { "dotnet", "peanuts", "bloomcounty" };
@@ -84,7 +84,7 @@ public class ModelServiceTests
 
     public class TheGetLicensesMethod : TestBaseClass
     {
-        [Fact]
+        [Test]
         public async Task CanRetrieveAndCacheLicenses()
         {
             var data = new[]
@@ -113,7 +113,7 @@ public class ModelServiceTests
                 Assert.Equal(data[i].Name, items[indexKey + "|" + data[i].Key].Name);
         }
 
-        [Fact]
+        [Test]
         public async Task ReturnsEmptyIfLicenseApiNotFound()
         {
             var apiClient = Substitute.For<IApiClient>();
@@ -127,7 +127,7 @@ public class ModelServiceTests
             Assert.Equal(0, fetched.Count);
         }
 
-        [Fact]
+        [Test]
         public async Task ReturnsEmptyIfCacheReadFails()
         {
             var apiClient = Substitute.For<IApiClient>();
@@ -144,7 +144,7 @@ public class ModelServiceTests
 
     public class TheGetAccountsMethod : TestBaseClass
     {
-        [Fact]
+        [Test]
         public async Task CanRetrieveAndCacheUserAndAccounts()
         {
             var orgs = new[]
@@ -173,7 +173,7 @@ public class ModelServiceTests
             Assert.Equal("snoopy", cachedUser.Login);
         }
 
-        [Fact]
+        [Test]
         public async Task CanRetrieveUserFromCacheAndAccountsFromApi()
         {
             var orgs = new[]
@@ -201,7 +201,7 @@ public class ModelServiceTests
             Assert.Equal("octocat", cachedUser.Login);
         }
 
-        [Fact]
+        [Test]
         public async Task OnlyRetrievesOneUserEvenIfCacheOrApiReturnsMoreThanOne()
         {
             // This should be impossible, but let's pretend it does happen.
@@ -225,7 +225,7 @@ public class ModelServiceTests
 
     public class TheGetRepositoriesMethod : TestBaseClass
     {
-        [Fact]
+        [Test]
         public async Task CanRetrieveAndCacheRepositoriesForUserAndOrganizations()
         {
             var orgs = new[]
@@ -313,7 +313,7 @@ public class ModelServiceTests
             Assert.Equal("octokit", cachedOctokitRepositories[2].Owner.Login);
         }
 
-        [Fact]
+        [Test]
         public async Task WhenNotLoggedInReturnsEmptyCollection()
         {
             var apiClient = Substitute.For<IApiClient>();
@@ -324,7 +324,7 @@ public class ModelServiceTests
             Assert.Equal(0, repos.Count);
         }
 
-        [Fact]
+        [Test]
         public async Task WhenLoggedInDoesNotBlowUpOnUnexpectedNetworkProblems()
         {
             var apiClient = Substitute.For<IApiClient>();
@@ -340,7 +340,7 @@ public class ModelServiceTests
 
     public class TheInvalidateAllMethod : TestBaseClass
     {
-        [Fact]
+        [Test]
         public async Task InvalidatesTheCache()
         {
             var apiClient = Substitute.For<IApiClient>();
@@ -354,7 +354,7 @@ public class ModelServiceTests
             Assert.Empty((await cache.GetAllObjects<AccountCacheItem>()));
         }
 
-        [Fact]
+        [Test]
         public async Task VaccumsTheCache()
         {
             var apiClient = Substitute.For<IApiClient>();
@@ -375,7 +375,8 @@ public class ModelServiceTests
 
     public class TheGetPullRequestsMethod : TestBaseClass
     {
-        [Fact(Skip = "Pull requests always refresh from the server now. Migrate this test to data that doesn't require constant refreshing.")]
+        [Test]
+        [Ignore("Pull requests always refresh from the server now. Migrate this test to data that doesn't require constant refreshing.")]
         public async Task NonExpiredIndexReturnsCache()
         {
             var expected = 5;
@@ -426,7 +427,7 @@ public class ModelServiceTests
             Assert.Collection(col, col.Select(x => new Action<IPullRequestModel>(t => Assert.StartsWith("Cache", x.Title))).ToArray());
         }
 
-        [Fact]
+        [Test]
         public async Task ExpiredIndexReturnsLive()
         {
             var expected = 5;
@@ -494,7 +495,7 @@ public class ModelServiceTests
             Assert.Collection(col, col.Select(x => new Action<IPullRequestModel>(t => Assert.StartsWith("Live", x.Title))).ToArray());
         }
 
-        [Fact]
+        [Test]
         public async Task ExpiredIndexClearsItems()
         {
             var expected = 5;

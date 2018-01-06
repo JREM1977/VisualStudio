@@ -7,7 +7,7 @@ using GitHub.Models;
 using GitHub.Primitives;
 using GitHub.Services;
 using NSubstitute;
-using Xunit;
+using NUnit.Framework;
 
 namespace UnitTests.GitHub.App.Factories
 {
@@ -15,7 +15,7 @@ namespace UnitTests.GitHub.App.Factories
     {
         public class TheCreateAsyncMethod
         {
-            [Fact]
+            [Test]
             public async Task ShouldCreateDifferentModelServiceForDifferentHost()
             {
                 var target = CreateTarget();
@@ -25,7 +25,7 @@ namespace UnitTests.GitHub.App.Factories
                 Assert.NotSame(instance1, instance2);
             }
 
-            [Fact]
+            [Test]
             public async Task ShouldCreateDifferentModelServiceForDifferentConnectionsWithSameAddress()
             {
                 var target = CreateTarget();
@@ -35,7 +35,7 @@ namespace UnitTests.GitHub.App.Factories
                 Assert.NotSame(instance1, instance2);
             }
 
-            [Fact]
+            [Test]
             public async Task ShouldCacheModelServiceForHost()
             {
                 var target = CreateTarget();
@@ -46,7 +46,7 @@ namespace UnitTests.GitHub.App.Factories
                 Assert.Same(instance1, instance2);
             }
 
-            [Fact]
+            [Test]
             public async Task ShouldInsertUser()
             {
                 var hostCacheFactory = Substitute.For<IHostCacheFactory>();

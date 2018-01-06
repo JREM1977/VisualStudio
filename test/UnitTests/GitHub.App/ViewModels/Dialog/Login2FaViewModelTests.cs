@@ -6,7 +6,7 @@ using GitHub.Services;
 using GitHub.ViewModels.Dialog;
 using NSubstitute;
 using Octokit;
-using Xunit;
+using NUnit.Framework;
 
 namespace UnitTests.GitHub.App.ViewModels.Dialog
 {
@@ -14,7 +14,7 @@ namespace UnitTests.GitHub.App.ViewModels.Dialog
     {
         public class TheShowMethod
         {
-            [Fact]
+            [Test]
             public void ClearsIsBusy()
             {
                 var target = CreateTarget();
@@ -26,7 +26,7 @@ namespace UnitTests.GitHub.App.ViewModels.Dialog
                 Assert.False(target.IsBusy);
             }
 
-            [Fact]
+            [Test]
             public void InvalidAuthenticationCodeIsSetWhenRetryFailed()
             {
                 var target = CreateTarget();
@@ -37,7 +37,7 @@ namespace UnitTests.GitHub.App.ViewModels.Dialog
                 Assert.True(target.InvalidAuthenticationCode);
             }
 
-            [Fact]
+            [Test]
             public async Task OkCommandCompletesAndReturnsNullWithNoAuthorizationCode()
             {
                 var target = CreateTarget();
@@ -51,7 +51,7 @@ namespace UnitTests.GitHub.App.ViewModels.Dialog
                 Assert.Null(result);
             }
 
-            [Fact]
+            [Test]
             public async Task OkCommandCompletesAndReturnsAuthorizationCode()
             {
                 var target = CreateTarget();
@@ -66,7 +66,7 @@ namespace UnitTests.GitHub.App.ViewModels.Dialog
                 Assert.Equal("123456", result.AuthenticationCode);
             }
 
-            [Fact]
+            [Test]
             public async Task ResendCodeCommandCompletesAndReturnsRequestResendCode()
             {
                 var target = CreateTarget();
@@ -82,7 +82,7 @@ namespace UnitTests.GitHub.App.ViewModels.Dialog
                 Assert.Equal(TwoFactorChallengeResult.RequestResendCode, result);
             }
            
-            [Fact]
+            [Test]
             public async Task ShowErrorMessageIsClearedWhenAuthenticationCodeSent()
             {
                 var target = CreateTarget();
@@ -100,7 +100,7 @@ namespace UnitTests.GitHub.App.ViewModels.Dialog
 
         public class TheCancelMethod
         {
-            [Fact]
+            [Test]
             public async Task CancelCommandCompletesAndReturnsNull()
             {
                 var target = CreateTarget();
@@ -116,7 +116,7 @@ namespace UnitTests.GitHub.App.ViewModels.Dialog
                 Assert.Null(result);
             }
 
-            [Fact]
+            [Test]
             public async Task Cancel_Resets_TwoFactorType()
             {
                 var target = CreateTarget();

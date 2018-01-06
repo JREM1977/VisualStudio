@@ -8,13 +8,13 @@ using GitHub.Services;
 using GitHub.ViewModels.Dialog;
 using NSubstitute;
 using ReactiveUI;
-using Xunit;
+using NUnit.Framework;
 
 public class LoginCredentialsViewModelTests
 {
     public class TheDoneSignal : TestBaseClass
     {
-        [Fact]
+        [Test]
         public async Task SucessfulGitHubLoginSignalsDone()
         {
             var connectionManager = Substitute.For<IConnectionManager>();
@@ -35,7 +35,7 @@ public class LoginCredentialsViewModelTests
             Assert.True(signalled);
         }
 
-        [Fact]
+        [Test]
         public async Task FailedGitHubLoginDoesNotSignalDone()
         {
             var connectionManager = Substitute.For<IConnectionManager>();
@@ -55,7 +55,7 @@ public class LoginCredentialsViewModelTests
             Assert.False(signalled);
         }
 
-        [Fact]
+        [Test]
         public async Task AllowsLoginFromEnterpriseAfterGitHubLoginHasFailed()
         {
             var connectionManager = Substitute.For<IConnectionManager>();
@@ -88,7 +88,7 @@ public class LoginCredentialsViewModelTests
 
     public class TheLoginModeProperty : TestBaseClass
     {
-        [Fact]
+        [Test]
         public void LoginModeTracksAvailableConnections()
         {
             var connectionManager = Substitute.For<IConnectionManager>();

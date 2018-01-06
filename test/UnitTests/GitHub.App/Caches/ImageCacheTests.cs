@@ -11,13 +11,13 @@ using GitHub.Factories;
 using GitHub.Services;
 using NSubstitute;
 using Rothko;
-using Xunit;
+using NUnit.Framework;
 
 public class ImageCacheTests
 {
     public class TheGetImageBytesMethod : TestBaseClass
     {
-        [Fact]
+        [Test]
         public async Task RetrievesImageFromCacheAndDoesNotFetchIt()
         {
             var singlePixel = Convert.FromBase64String("R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==");
@@ -36,7 +36,7 @@ public class ImageCacheTests
             Assert.Equal(32, retrieved.PixelHeight);
         }
 
-        [Fact]
+        [Test]
         public async Task WhenLoadingFromCacheFailsInvalidatesCacheEntry()
         {
             var cache = new InMemoryBlobCache();
@@ -56,7 +56,7 @@ public class ImageCacheTests
             await Assert.ThrowsAsync<KeyNotFoundException>(async () => await cache.Get("https://fake/"));
         }
         
-        [Fact]
+        [Test]
         public async Task DownloadsImageWhenMissingAndCachesIt()
         {
             var singlePixel = Convert.FromBase64String("R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==");
@@ -75,7 +75,7 @@ public class ImageCacheTests
             Assert.Equal(32, retrieved.PixelHeight);
         }
 
-        [Fact]
+        [Test]
         public async Task ThrowsKeyNotFoundExceptionWhenItemNotInCacheAndImageFetchThrowsException()
         {
             var imageUri = new Uri("https://example.com/poop.gif");
@@ -90,7 +90,7 @@ public class ImageCacheTests
                 imageCache.GetImage(imageUri).FirstAsync());
         }
 
-        [Fact]
+        [Test]
         public async Task ThrowsKeyNotFoundExceptionWhenItemNotInCacheAndImageFetchReturnsEmpty()
         {
             var imageUri = new Uri("https://example.com/poop.gif");
@@ -106,7 +106,7 @@ public class ImageCacheTests
                 imageCache.GetImage(imageUri).FirstAsync());
         }
 
-        [Fact]
+        [Test]
         public void OnlyDownloadsAndDecodesOnceForConcurrentOperations()
         {
             var singlePixel = Convert.FromBase64String("R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==");
@@ -139,7 +139,7 @@ public class ImageCacheTests
 
     public class TheInvalidateMethod : TestBaseClass
     {
-        [Fact]
+        [Test]
         public async Task RemovesImageFromCache()
         {
             var singlePixel = Convert.FromBase64String("R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==");
@@ -157,7 +157,7 @@ public class ImageCacheTests
 
     public class TheSeedImageMethod : TestBaseClass
     {
-        [Fact]
+        [Test]
         public async Task AddsImageDirectlyToCache()
         {
             var singlePixel = Convert.FromBase64String("R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==");

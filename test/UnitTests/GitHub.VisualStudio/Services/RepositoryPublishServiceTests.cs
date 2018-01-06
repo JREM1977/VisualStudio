@@ -6,14 +6,13 @@ using GitHub.Models;
 using GitHub.Services;
 using Microsoft.VisualStudio.Shell.Interop;
 using NSubstitute;
-using Xunit;
-using UnitTests;
+using NUnit.Framework;
 
 public class RepositoryPublishServiceTests
 {
     public class ThePublishMethod : TestBaseClass
     {
-        [Fact]
+        [Test]
         public async Task CreatesRepositoryAndPushesLocalToIt()
         {
             var solution = Substitute.For<IVsSolution>();
@@ -29,7 +28,7 @@ public class RepositoryPublishServiceTests
 
             var repository = await service.PublishRepository(newRepository, account, apiClient);
 
-            Assert.Equal("https://github.com/monalisa/test", repository.CloneUrl);
+            Assert.AreEqual("https://github.com/monalisa/test", repository.CloneUrl);
         }
     }
 }

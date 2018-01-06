@@ -13,13 +13,13 @@ using LibGit2Sharp;
 using NSubstitute;
 using Rothko;
 using UnitTests;
-using Xunit;
+using NUnit.Framework;
 
 public class PullRequestServiceTests : TestBaseClass
 {
     public class TheIsWorkingDirectoryCleanMethod
     {
-        [Fact]
+        [Test]
         public async Task NewRepo_True()
         {
             using (var tempDir = new TempDirectory())
@@ -34,7 +34,7 @@ public class PullRequestServiceTests : TestBaseClass
             }
         }
 
-        [Fact]
+        [Test]
         public async Task UntrackedFile_True()
         {
             using (var tempDir = new TempDirectory())
@@ -52,7 +52,7 @@ public class PullRequestServiceTests : TestBaseClass
         }
 
 
-        [Fact]
+        [Test]
         public async Task CommitFile_True()
         {
             using (var tempDir = new TempDirectory())
@@ -71,7 +71,7 @@ public class PullRequestServiceTests : TestBaseClass
             }
         }
 
-        [Fact]
+        [Test]
         public async Task AddedFile_False()
         {
             using (var tempDir = new TempDirectory())
@@ -90,7 +90,7 @@ public class PullRequestServiceTests : TestBaseClass
             }
         }
 
-        [Fact]
+        [Test]
         public async Task ModifiedFile_False()
         {
             using (var tempDir = new TempDirectory())
@@ -111,7 +111,7 @@ public class PullRequestServiceTests : TestBaseClass
             }
         }
 
-        [Fact]
+        [Test]
         public async Task StagedFile_False()
         {
             using (var tempDir = new TempDirectory())
@@ -133,7 +133,7 @@ public class PullRequestServiceTests : TestBaseClass
             }
         }
 
-        [Fact]
+        [Test]
         public async Task MissingFile_False()
         {
             using (var tempDir = new TempDirectory())
@@ -154,7 +154,7 @@ public class PullRequestServiceTests : TestBaseClass
             }
         }
 
-        [Fact]
+        [Test]
         public async Task RemovedFile_False()
         {
             using (var tempDir = new TempDirectory())
@@ -176,7 +176,7 @@ public class PullRequestServiceTests : TestBaseClass
             }
         }
 
-        [Fact]
+        [Test]
         public async Task RenamedInIndexFile_False()
         {
             using (var tempDir = new TempDirectory())
@@ -201,7 +201,7 @@ public class PullRequestServiceTests : TestBaseClass
             }
         }
 
-        [Fact]
+        [Test]
         public async Task RenamedInWorkingDirFile_False()
         {
             using (var tempDir = new TempDirectory())
@@ -256,7 +256,7 @@ public class PullRequestServiceTests : TestBaseClass
 
     public class TheExtractFileMethod
     {
-        [Fact]
+        [Test]
         public async Task ExtractHead()
         {
             var baseFileContent = "baseFileContent";
@@ -272,7 +272,7 @@ public class PullRequestServiceTests : TestBaseClass
             Assert.Equal(headFileContent, File.ReadAllText(file));
         }
 
-        [Fact]
+        [Test]
         public async Task ExtractBase_MergeBaseAvailable_UseMergeBaseSha()
         {
             var baseFileContent = "baseFileContent";
@@ -290,7 +290,7 @@ public class PullRequestServiceTests : TestBaseClass
             Assert.Equal(mergeBaseFileContent, File.ReadAllText(file));
         }
 
-        [Fact]
+        [Test]
         public async void MergeBaseNotAvailable_ThrowsNotFoundException()
         {
             var baseFileContent = "baseFileContent";
@@ -307,7 +307,7 @@ public class PullRequestServiceTests : TestBaseClass
                                 fileName, head, Encoding.UTF8, mergeBaseException: mergeBaseException));
         }
 
-        [Fact]
+        [Test]
         public async Task FileAdded_BaseFileEmpty()
         {
             var baseFileContent = null as string;
@@ -323,7 +323,7 @@ public class PullRequestServiceTests : TestBaseClass
             Assert.Equal(string.Empty, File.ReadAllText(file));
         }
 
-        [Fact]
+        [Test]
         public async Task FileDeleted_HeadFileEmpty()
         {
             var baseFileContent = "baseFileContent";
@@ -342,9 +342,8 @@ public class PullRequestServiceTests : TestBaseClass
         }
 
         // https://github.com/github/VisualStudio/issues/1010
-        [Theory]
-        [InlineData("utf-8")]        // Unicode (UTF-8)
-        [InlineData("Windows-1252")] // Western European (Windows)        
+        [TestCase("utf-8")]        // Unicode (UTF-8)
+        [TestCase("Windows-1252")] // Western European (Windows)        
         public async Task ChangeEncoding(string encodingName)
         {
             var encoding = Encoding.GetEncoding(encodingName);
@@ -455,7 +454,7 @@ public class PullRequestServiceTests : TestBaseClass
         }
     }
 
-    [Fact]
+    [Test]
     public void CreatePullRequestAllArgsMandatory()
     {
         var serviceProvider = Substitutes.ServiceProvider;
@@ -497,7 +496,7 @@ public class PullRequestServiceTests : TestBaseClass
 
     public class TheCheckoutMethod
     {
-        [Fact]
+        [Test]
         public async void ShouldCheckoutExistingBranch()
         {
             var gitClient = MockGitClient();
@@ -520,7 +519,7 @@ public class PullRequestServiceTests : TestBaseClass
             Assert.Equal(2, gitClient.ReceivedCalls().Count());
         }
 
-        [Fact]
+        [Test]
         public async void ShouldCheckoutLocalBranch()
         {
             var gitClient = MockGitClient();
@@ -547,7 +546,7 @@ public class PullRequestServiceTests : TestBaseClass
             Assert.Equal(4, gitClient.ReceivedCalls().Count());
         }
 
-        [Fact]
+        [Test]
         public async void ShouldCheckoutBranchFromFork()
         {
             var gitClient = MockGitClient();
@@ -577,7 +576,7 @@ public class PullRequestServiceTests : TestBaseClass
             Assert.Equal(7, gitClient.ReceivedCalls().Count());
         }
 
-        [Fact]
+        [Test]
         public async void ShouldUseUniquelyNamedRemoteForFork()
         {
             var gitClient = MockGitClient();
@@ -613,7 +612,7 @@ public class PullRequestServiceTests : TestBaseClass
 
     public class TheGetDefaultLocalBranchNameMethod
     {
-        [Fact]
+        [Test]
         public async Task ShouldReturnCorrectDefaultLocalBranchName()
         {
             var service = new PullRequestService(
@@ -627,7 +626,7 @@ public class PullRequestServiceTests : TestBaseClass
             Assert.Equal("pr/123-pull-requests-can-be-named-all-sorts-of-thing-s-sic", result);
         }
 
-        [Fact]
+        [Test]
         public async Task ShouldReturnCorrectDefaultLocalBranchNameForPullRequestsWithNonLatinChars()
         {
             var service = new PullRequestService(
@@ -641,7 +640,7 @@ public class PullRequestServiceTests : TestBaseClass
             Assert.Equal("pr/123", result);
         }
 
-        [Fact]
+        [Test]
         public async Task DefaultLocalBranchNameShouldNotClashWithExistingBranchNames()
         {
             var service = new PullRequestService(
@@ -658,7 +657,7 @@ public class PullRequestServiceTests : TestBaseClass
 
     public class TheGetLocalBranchesMethod
     {
-        [Fact]
+        [Test]
         public async Task ShouldReturnPullRequestBranchForPullRequestFromSameRepository()
         {
             var service = new PullRequestService(
@@ -675,7 +674,7 @@ public class PullRequestServiceTests : TestBaseClass
             Assert.Equal("source", result.Name);
         }
 
-        [Fact]
+        [Test]
         public async Task ShouldReturnMarkedBranchForPullRequestFromFork()
         {
             var repo = Substitute.For<IRepository>();
@@ -733,7 +732,7 @@ public class PullRequestServiceTests : TestBaseClass
 
     public class TheRemoteUnusedRemotesMethod
     {
-        [Fact]
+        [Test]
         public async Task ShouldRemoveUnusedRemote()
         {
             var gitClient = MockGitClient();

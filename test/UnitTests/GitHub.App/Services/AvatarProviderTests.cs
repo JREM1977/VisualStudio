@@ -11,13 +11,13 @@ using GitHub.Models;
 using GitHub.Services;
 using NSubstitute;
 using UnitTests.Helpers;
-using Xunit;
+using NUnit.Framework;
 
 public class AvatarProviderTests
 {
     public class TheDefaultOrgBitmapImageProperty : TestBaseClass
     {
-        [Fact]
+        [Test]
         public async Task CanBeAccessedFromMultipleThreads()
         {
             var blobCache = new InMemoryBlobCache();
@@ -42,7 +42,7 @@ public class AvatarProviderTests
 
     public class TheDefaultUserBitmapImageProperty : TestBaseClass
     {
-        [Fact]
+        [Test]
         public async Task CanBeAccessedFromMultipleThreads()
         {
             var blobCache = new InMemoryBlobCache();
@@ -67,7 +67,7 @@ public class AvatarProviderTests
 
     public class TheGetAvatarMethod : TestBaseClass
     {
-        [Fact]
+        [Test]
         public async Task GetsAvatarFromCache()
         {
             var expectedImage = AvatarProvider.CreateBitmapImage("pack://application:,,,/GitHub.App;component/Images/default_org_avatar.png");
@@ -86,7 +86,7 @@ public class AvatarProviderTests
             AssertSameImage(expectedImage, retrieved);
         }
 
-        [Fact]
+        [Test]
         public async Task RetrievesGitHubAvatar()
         {
             var expectedImage = AvatarProvider.CreateBitmapImage("pack://application:,,,/GitHub.App;component/Images/default_org_avatar.png");
@@ -126,7 +126,7 @@ public class AvatarProviderTests
 
     public class TheInvalidateAvatarMethod : TestBaseClass
     {
-        [Fact]
+        [Test]
         public void DoesNotThrowOnNullUserOrAvatarUrl()
         {
             var blobStore = Substitute.For<IBlobCache>();
@@ -143,7 +143,7 @@ public class AvatarProviderTests
 
     public class TheGetBytesFromBitmapImageMethod : TestBaseClass
     {
-        [Fact]
+        [Test]
         public void GetsBytesFromImage()
         {
             var image = AvatarProvider.CreateBitmapImage("pack://application:,,,/GitHub.App;component/Images/default_user_avatar.png");

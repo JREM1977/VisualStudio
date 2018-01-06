@@ -8,7 +8,7 @@ using GitHub.Services;
 using GitHub.ViewModels;
 using GitHub.ViewModels.Dialog;
 using NSubstitute;
-using Xunit;
+using NUnit.Framework;
 
 namespace UnitTests.GitHub.App.ViewModels.Dialog
 {
@@ -16,7 +16,7 @@ namespace UnitTests.GitHub.App.ViewModels.Dialog
     {
         public class TheStartMethod : TestBaseClass
         {
-            [Fact]
+            [Test]
             public void SetsContent()
             {
                 var target = CreateTarget();
@@ -27,7 +27,7 @@ namespace UnitTests.GitHub.App.ViewModels.Dialog
                 Assert.Same(content, target.Content);
             }
 
-            [Fact]
+            [Test]
             public void SignalsCloseWhenContentRaisesClosed()
             {
                 var target = CreateTarget();
@@ -46,7 +46,7 @@ namespace UnitTests.GitHub.App.ViewModels.Dialog
 
         public class TheStartWithConnectionMethod
         {
-            [Fact]
+            [Test]
             public async Task ShowsLoginDialogWhenNoConnectionsAvailable()
             {
                 var target = CreateTarget();
@@ -57,7 +57,7 @@ namespace UnitTests.GitHub.App.ViewModels.Dialog
                 Assert.IsAssignableFrom<ILoginViewModel>(target.Content);
             }
 
-            [Fact]
+            [Test]
             public async Task ShowsContentWhenConnectionAvailable()
             {
                 var connectionManager = CreateConnectionManager(1);
@@ -70,7 +70,7 @@ namespace UnitTests.GitHub.App.ViewModels.Dialog
                 await content.Received(1).InitializeAsync(connectionManager.Connections[0]);
             }
 
-            [Fact]
+            [Test]
             public async Task ShowsContentWhenLoggedIn()
             {
                 var target = CreateTarget();
@@ -86,7 +86,7 @@ namespace UnitTests.GitHub.App.ViewModels.Dialog
                 await content.Received(1).InitializeAsync(connection);
             }
 
-            [Fact]
+            [Test]
             public async Task ClosesDialogWhenLoginReturnsNullConnection()
             {
                 var target = CreateTarget();

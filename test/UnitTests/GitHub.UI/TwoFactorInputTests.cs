@@ -3,14 +3,14 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using GitHub.UI;
-using Xunit;
+using NUnit.Framework;
 
 public class TwoFactorInputTests
 {
     public class TheTextProperty : TestBaseClass
     {
 #if !NCRUNCH
-        [STAFact]
+        [Test]
 #endif
         public void SetsTextBoxesToIndividualCharacters()
         {
@@ -19,17 +19,17 @@ public class TwoFactorInputTests
 
             twoFactorInput.Text = "012345";
 
-            Assert.Equal("012345", twoFactorInput.Text);
-            Assert.Equal("0", textBoxes[0].Text);
-            Assert.Equal("1", textBoxes[1].Text);
-            Assert.Equal("2", textBoxes[2].Text);
-            Assert.Equal("3", textBoxes[3].Text);
-            Assert.Equal("4", textBoxes[4].Text);
-            Assert.Equal("5", textBoxes[5].Text);
+            Assert.AreEqual("012345", twoFactorInput.Text);
+            Assert.AreEqual("0", textBoxes[0].Text);
+            Assert.AreEqual("1", textBoxes[1].Text);
+            Assert.AreEqual("2", textBoxes[2].Text);
+            Assert.AreEqual("3", textBoxes[3].Text);
+            Assert.AreEqual("4", textBoxes[4].Text);
+            Assert.AreEqual("5", textBoxes[5].Text);
         }
 
 #if !NCRUNCH
-        [STAFact]
+        [Test]
 #endif
         public void IgnoresNonDigitCharacters()
         {
@@ -38,17 +38,17 @@ public class TwoFactorInputTests
 
             twoFactorInput.Text = "01xyz2345";
 
-            Assert.Equal("012345", twoFactorInput.Text);
-            Assert.Equal("0", textBoxes[0].Text);
-            Assert.Equal("1", textBoxes[1].Text);
-            Assert.Equal("2", textBoxes[2].Text);
-            Assert.Equal("3", textBoxes[3].Text);
-            Assert.Equal("4", textBoxes[4].Text);
-            Assert.Equal("5", textBoxes[5].Text);
+            Assert.AreEqual("012345", twoFactorInput.Text);
+            Assert.AreEqual("0", textBoxes[0].Text);
+            Assert.AreEqual("1", textBoxes[1].Text);
+            Assert.AreEqual("2", textBoxes[2].Text);
+            Assert.AreEqual("3", textBoxes[3].Text);
+            Assert.AreEqual("4", textBoxes[4].Text);
+            Assert.AreEqual("5", textBoxes[5].Text);
         }
 
 #if !NCRUNCH
-        [STAFact]
+        [Test]
 #endif
         public void HandlesNotEnoughCharacters()
         {
@@ -57,21 +57,20 @@ public class TwoFactorInputTests
 
             twoFactorInput.Text = "012";
 
-            Assert.Equal("012", twoFactorInput.Text);
-            Assert.Equal("0", textBoxes[0].Text);
-            Assert.Equal("1", textBoxes[1].Text);
-            Assert.Equal("2", textBoxes[2].Text);
-            Assert.Equal("", textBoxes[3].Text);
-            Assert.Equal("", textBoxes[4].Text);
-            Assert.Equal("", textBoxes[5].Text);
+            Assert.AreEqual("012", twoFactorInput.Text);
+            Assert.AreEqual("0", textBoxes[0].Text);
+            Assert.AreEqual("1", textBoxes[1].Text);
+            Assert.AreEqual("2", textBoxes[2].Text);
+            Assert.AreEqual("", textBoxes[3].Text);
+            Assert.AreEqual("", textBoxes[4].Text);
+            Assert.AreEqual("", textBoxes[5].Text);
         }
 
 #if !NCRUNCH
-        [STATheory]
 #endif
-        [InlineData(null, null)]
-        [InlineData("", "")]
-        [InlineData("xxxx", "")]
+        [TestCase(null, null)]
+        [TestCase("", "")]
+        [TestCase("xxxx", "")]
         public void HandlesNullAndStringsWithNoDigits(string input, string expected)
         {
             var twoFactorInput = new TwoFactorInput();
@@ -79,13 +78,13 @@ public class TwoFactorInputTests
 
             twoFactorInput.Text = input;
 
-            Assert.Equal(expected, twoFactorInput.Text);
-            Assert.Equal("", textBoxes[0].Text);
-            Assert.Equal("", textBoxes[1].Text);
-            Assert.Equal("", textBoxes[2].Text);
-            Assert.Equal("", textBoxes[3].Text);
-            Assert.Equal("", textBoxes[4].Text);
-            Assert.Equal("", textBoxes[5].Text);
+            Assert.AreEqual(expected, twoFactorInput.Text);
+            Assert.AreEqual("", textBoxes[0].Text);
+            Assert.AreEqual("", textBoxes[1].Text);
+            Assert.AreEqual("", textBoxes[2].Text);
+            Assert.AreEqual("", textBoxes[3].Text);
+            Assert.AreEqual("", textBoxes[4].Text);
+            Assert.AreEqual("", textBoxes[5].Text);
         }
 
         static IEnumerable<FrameworkElement> GetChildrenRecursive(FrameworkElement element)

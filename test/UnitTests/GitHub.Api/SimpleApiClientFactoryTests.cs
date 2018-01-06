@@ -5,13 +5,13 @@ using GitHub.Primitives;
 using GitHub.Services;
 using GitHub.VisualStudio;
 using NSubstitute;
-using Xunit;
+using NUnit.Framework;
 
 public class SimpleApiClientFactoryTests
 {
     public class TheCreateMethod
     {
-        [Fact]
+        [Test]
         public async Task CreatesNewInstanceOfSimpleApiClient()
         {
             const string url = "https://github.com/github/CreatesNewInstanceOfSimpleApiClient";
@@ -35,7 +35,7 @@ public class SimpleApiClientFactoryTests
 
     public class TheClearFromCacheMethod
     {
-        [Fact]
+        [Test]
         public async Task RemovesClientFromCache()
         {
             const string url = "https://github.com/github/RemovesClientFromCache";

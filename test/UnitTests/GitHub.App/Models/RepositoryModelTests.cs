@@ -5,19 +5,18 @@ using GitHub.VisualStudio;
 using LibGit2Sharp;
 using NSubstitute;
 using UnitTests;
-using Xunit;
+using NUnit.Framework;
 
 public class RepositoryModelTests
 {
     public class ComparisonTests : TestBaseClass
     {
-        [Theory]
-        [InlineData("a name", "https://github.com/github/VisualStudio", @"C:\some\path", "a name", "https://github.com/github/VisualStudio", @"C:\some\path")]
-        [InlineData("a name", "https://github.com/github/VisualStudio", @"c:\some\path", "a name", "https://github.com/github/VisualStudio", @"C:\some\path")]
-        [InlineData("a name", "https://github.com/github/VisualStudio", @"C:\some\path", "a name", "https://github.com/github/VisualStudio", @"c:\some\path")]
-        [InlineData("a name", "https://github.com/github/VisualStudio", @"C:\some\path\", "a name", "https://github.com/github/VisualStudio", @"c:\some\path")]
-        [InlineData("a name", "https://github.com/github/VisualStudio", @"C:\some\path", "a name", "https://github.com/github/VisualStudio", @"c:\some\path\")]
-        [InlineData("a name", "https://github.com/github/VisualStudio", @"C:\some\path\", "a name", "https://github.com/github/VisualStudio", @"c:\some\path\")]
+        [TestCase("a name", "https://github.com/github/VisualStudio", @"C:\some\path", "a name", "https://github.com/github/VisualStudio", @"C:\some\path")]
+        [TestCase("a name", "https://github.com/github/VisualStudio", @"c:\some\path", "a name", "https://github.com/github/VisualStudio", @"C:\some\path")]
+        [TestCase("a name", "https://github.com/github/VisualStudio", @"C:\some\path", "a name", "https://github.com/github/VisualStudio", @"c:\some\path")]
+        [TestCase("a name", "https://github.com/github/VisualStudio", @"C:\some\path\", "a name", "https://github.com/github/VisualStudio", @"c:\some\path")]
+        [TestCase("a name", "https://github.com/github/VisualStudio", @"C:\some\path", "a name", "https://github.com/github/VisualStudio", @"c:\some\path\")]
+        [TestCase("a name", "https://github.com/github/VisualStudio", @"C:\some\path\", "a name", "https://github.com/github/VisualStudio", @"c:\some\path\")]
         public void SameContentEqualsTrue(string name1, string url1, string path1, string name2, string url2, string path2)
         {
             var a = new LocalRepositoryModel(name1, new UriString(url1), path1);
@@ -27,8 +26,7 @@ public class RepositoryModelTests
             Assert.Equal(a.GetHashCode(), b.GetHashCode());
         }
 
-        [Theory]
-        [InlineData(1, "a name", "https://github.com/github/VisualStudio", 1, "a name", "https://github.com/github/VisualStudio")]
+        [TestCase(1, "a name", "https://github.com/github/VisualStudio", 1, "a name", "https://github.com/github/VisualStudio")]
         public void SameContentEqualsTrue2(long id1, string name1, string url1, long id2, string name2, string url2)
         {
             var account = Substitute.For<IAccount>();
@@ -39,8 +37,7 @@ public class RepositoryModelTests
             Assert.Equal(a.GetHashCode(), b.GetHashCode());
         }
 
-        [Theory]
-        [InlineData(1, "a name1", "https://github.com/github/VisualStudio", 2, "a name", "https://github.com/github/VisualStudio")]
+        [TestCase(1, "a name1", "https://github.com/github/VisualStudio", 2, "a name", "https://github.com/github/VisualStudio")]
         public void DifferentContentEqualsFalse(long id1, string name1, string url1, long id2, string name2, string url2)
         {
             var account = Substitute.For<IAccount>();
@@ -52,10 +49,10 @@ public class RepositoryModelTests
         }
     }
 
-    [Collection("PackageServiceProvider global data tests")]
+    //[Collection("PackageServiceProvider global data tests")]
     public class PathConstructorTests : TestBaseClass
     {
-        [Fact]
+        [Test]
         public void NoRemoteUrl()
         {
             using (var temp = new TempDirectory())
@@ -70,7 +67,7 @@ public class RepositoryModelTests
             }
         }
 
-        [Fact]
+        [Test]
         public void WithRemoteUrl()
         {
             using (var temp = new TempDirectory())
@@ -89,9 +86,8 @@ public class RepositoryModelTests
 
     public class HostAddressTests : TestBaseClass
     {
-        [Theory]
-        [InlineData("https://github.com/owner/repo")]
-        [InlineData("https://anotherurl.com/foo/bar")]
+        [TestCase("https://github.com/owner/repo")]
+        [TestCase("https://anotherurl.com/foo/bar")]
         public void SameContentEqualsTrue(string url)
         {
             var a = HostAddress.Create(url);

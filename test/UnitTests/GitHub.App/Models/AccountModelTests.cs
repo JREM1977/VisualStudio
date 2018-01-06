@@ -9,13 +9,13 @@ using GitHub.Collections;
 using GitHub.Models;
 using GitHub.Services;
 using ReactiveUI;
-using Xunit;
+using NUnit.Framework;
 
 namespace UnitTests.GitHub.App.Models
 {
     public class AccountModelTests : TestBaseClass
     {
-        [Fact]
+        [Test]
         public void CopyFromDoesNotLoseAvatar()
         {
             var userImage = AvatarProvider.CreateBitmapImage("pack://application:,,,/GitHub.App;component/Images/default_user_avatar.png");
